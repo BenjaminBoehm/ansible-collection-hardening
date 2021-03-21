@@ -8,7 +8,11 @@
 - name: get all users that have no password or authentication_string on MySQL version >= 5.7.6
   community.mysql.mysql_query:
     query:
-      - select user,host,password from mysql.user where (length(password)=0 or password="") and (length(authentication_string)=0 or authentication_string="") and user NOT IN ('mysql.sys', 'mysqlxsys', 'mariadb.sys');
+      - SELECT user, host, password
+        FROM mysql.user
+        WHERE (length(password)=0 OR password="")
+        AND (length(authentication_string)=0 OR authentication_string="")
+        AND USER NOT IN ('mysql.sys', 'mysqlxsys', 'mariadb.sys');
     login_unix_socket: "{{ login_unix_socket | default(omit) }}"
   register: mysql_users_wo_passwords_or_auth_string
   when:
